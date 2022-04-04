@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!--    gradient ikony, strony glownej - od color 3 do 1 -->
+<!--    tło -->
+    <color name="color1">#FFE8D6</color>
+<!--    przyciski -->
+    <color name="color2">#DDBEA9</color>
+<!--    gorny panel -->
+    <color name="color3">#CB997E</color>
+<!--    pozostale domyslnie wymagane kolory -->
+    <color name="bright1">#A5A58D</color>
+    <color name="bright2">#6B705C</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>
