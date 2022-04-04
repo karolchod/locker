@@ -1,0 +1,1195 @@
+{
+	"info": {
+		"_postman_id": "685c0bd0-818d-4494-a5a5-022cc8e4c531",
+		"name": "lockercollection",
+		"description": "# Introduction\nAPI to communicate with backend of locker project.\n\n# Overview\nAPI is divided into small services, which represent tables in database.\n\n# Authentication\nTo use API, you have to register user and get approved by administrator. Then ask for JWT token.\n\n# Error Codes\nVarious errors may appear, and need to be handled in frontend apps. When request is successful, it may contain requested data in JSON format, or body may be empty.\n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Tokens",
+			"item": [
+				{
+					"name": "refresh token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.collectionVariables.set(\"access_token\", jsonData.access_token);\r",
+									"pm.collectionVariables.set(\"refresh_token\", jsonData.refresh_token);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{refresh_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{server_url}}/api/refreshtoken",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"refreshtoken"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.collectionVariables.set(\"access_token\", jsonData.access_token);\r",
+									"pm.collectionVariables.set(\"refresh_token\", jsonData.refresh_token);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "user5@user.us",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1111",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{server_url}}/api/login",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Requests for JWT access token with user credentials, or by using refresh token. Access token expires after an hour, and refresh token after month."
+		},
+		{
+			"name": "User service",
+			"item": [
+				{
+					"name": "get users and admins",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/api/user/users",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register user ALL",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"id\": 1,\r\n        \"name\": \"user7@user.us\",\r\n        \"username\": \"user7@user.us\",\r\n        \"password\": \"1111\",\r\n        \"role_id\": 9\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server_url}}/api/user/register",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"id\": 10,\r\n        \"name\": \"b@b.b\",\r\n        \"username\": \"b@b.b\",\r\n        \"password\": \"encrypted\",\r\n        \"role_id\": 4\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server_url}}/api/user/edituser",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"edituser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app user by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/api/user/appuser?id=5",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"appuser"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get new users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/api/user/newusers",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"newusers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user by token",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/api/user/bytoken",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"bytoken"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get roles Copy",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/api/user/roles",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Requests to manage users, user roles, approve new users by administrator."
+		},
+		{
+			"name": "Locker service",
+			"item": [
+				{
+					"name": "get lockers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/api/locker/lockers",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"locker",
+								"lockers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get locker by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/api/locker/locker?id=1",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"locker",
+								"locker"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add locker",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"id\": 1,\r\n        \"name\": \"Bez wolnych skrytek\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server_url}}/api/locker/addlocker",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"locker",
+								"addlocker"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit locker",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"id\": 2,\r\n        \"name\": \"DS Riviera\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server_url}}/api/locker/editlocker",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"locker",
+								"editlocker"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Box service",
+			"item": [
+				{
+					"name": "get boxes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/api/box/boxes",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"box",
+								"boxes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get box by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/api/box/box?id=1",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"box",
+								"box"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get locker by box",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/api/box/lockerbybox?id=2",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"box",
+								"lockerbybox"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get boxes by locker id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/api/box/boxesinlocker?id=1",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"box",
+								"boxesinlocker"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get num of empty boxes in locker",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/api/box/emptyinlocker?id=1",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"box",
+								"emptyinlocker"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get boxes status in locker custom string",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/api/box/boxesstatus?id=1",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"box",
+								"boxesstatus"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add box",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"id\": 8,\r\n        \"locker_id\": 2,\r\n        \"open\": false,\r\n        \"used\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server_url}}/api/box/addbox",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"box",
+								"addbox"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit box",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"id\": 3,\r\n        \"locker_id\": 1,\r\n        \"isused\": true,\r\n        \"isopen\": false\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server_url}}/api/box/editbox",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"box",
+								"editbox"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "open box",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server_url}}/api/box/openbox?id=3",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"box",
+								"openbox"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "close box",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server_url}}/api/box/closebox?id=3",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"box",
+								"closebox"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "use box",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server_url}}/api/box/usebox?id=5",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"box",
+								"usebox"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "release box",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server_url}}/api/box/releasebox?id=5",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"box",
+								"releasebox"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Parcel service",
+			"item": [
+				{
+					"name": "get parcels",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/api/parcel/parcels",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"parcel",
+								"parcels"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get active parcels",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/api/parcel/active",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"parcel",
+								"active"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get finished parcels",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/api/parcel/finished",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"parcel",
+								"finished"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get parcel by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/api/parcel/parcel?id=4",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"parcel",
+								"parcel"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get parcels by box id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/api/parcel/box?id=6",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"parcel",
+								"box"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get parcels to user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/api/parcel/to?id=2",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"parcel",
+								"to"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get parcels from user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/api/parcel/from?id=2",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"parcel",
+								"from"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create parcel (and set box used)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"id\": 1,\"box_id\": 2,\"user_sender_id\": 2,\"user_recipient_id\": 5,\"createddate\": \"2022-01-08\",\"isfinished\": true}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server_url}}/api/parcel/create",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"parcel",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "finish parcel (and set box not used)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server_url}}/api/parcel/finish?id=7",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"parcel",
+								"finish"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "7"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update parcel",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"id\": 3,\r\n        \"box_id\": 6,\r\n        \"user_sender_id\": 4,\r\n        \"user_recipient_id\": 5,\r\n        \"createddate\": \"2022-01-08\",\r\n        \"isfinished\": true\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server_url}}/api/parcel/update",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"api",
+								"parcel",
+								"update"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "access_token",
+			"value": ""
+		},
+		{
+			"key": "refresh_token",
+			"value": ""
+		},
+		{
+			"key": "server_url",
+			"value": ""
+		}
+	]
+}
