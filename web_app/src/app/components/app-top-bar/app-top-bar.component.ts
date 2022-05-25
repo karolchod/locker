@@ -9,8 +9,11 @@ export class AppTopBarComponent implements OnInit {
 
   imageSrc = 'assets/setting.png'  
   imageAlt = 'Settings'
+  login: string
 
-  constructor() { }
+  constructor() {
+    this.login = "test user login"
+   }
 
   ngOnInit(): void {
   }
