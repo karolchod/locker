@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/user/**","/api/lock/**","/api/box/**","/api/parcel/**")
                 .hasAnyAuthority("ROLE_USER", "ROLE_ADMIN", "ROLE_LOCKER");
-
+        http.cors();
 
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
@@ -55,4 +55,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
+
 }

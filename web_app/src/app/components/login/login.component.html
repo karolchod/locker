@@ -1,0 +1,8 @@
+
+<input type="text" #loginInput>
+<input type="text" #passwordInput>
+<button (click)="tryLogin(loginInput.value,passwordInput.value)">Zaloguj</button>
+<br>
+Token: <br>{{tokenRequestResponse?.access_token}}
+<br>
+<hr>
