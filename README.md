@@ -6,6 +6,9 @@ Goal of this project is to implement a system of interactive boxes for storing a
 
 Project was started as part of my BSc thesis at Warsaw University of Technology (graduated in February 2022).
 
+## In progress
+Plan for further development is client and administrator web app.
+
 ## Technologies
 Database:
 * PostgreSQL 14
@@ -17,6 +20,9 @@ Server
 
 Mobile app
 * Kotlin
+
+Web app
+* Angular
 
 Microcontroller
 * ESP8266
