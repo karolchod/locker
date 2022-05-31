@@ -1,0 +1,36 @@
+<!-- <div *ngIf="!loggedIn()">
+    <input type="text" #loginInput value="user1@user.us">
+    <br><br>
+    <input type="text" #passwordInput value="1111">
+    <br><br>
+    <button (click)="tryLogin(loginInput.value,passwordInput.value)">Zaloguj</button>
+    <br><br>
+    <hr>
+</div>
+<div *ngIf="loggedIn()">
+    
+</div> -->
+
+
+
+<!-- <div class="imgcontainer">
+    <img src="img_avatar2.png" alt="Avatar" class="avatar">
+  </div> -->
+
+  <div class="container" *ngIf="!loggedIn()">
+    <label for="uname"><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" #loginInput value="user1@user.us">
+
+    <label for="psw"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" #passwordInput value="1111">
+
+    <button (click)="tryLogin(loginInput.value,passwordInput.value)">Login</button>
+    <!-- <label>
+      <input type="checkbox" checked="checked" name="remember"> Remember me
+    </label> -->
+  </div>
+
+  <!-- <div class="container" style="background-color:#f1f1f1">
+    <button type="button" class="cancelbtn">Cancel</button>
+    <span class="psw">Forgot <a href="#">password?</a></span>
+  </div> -->
