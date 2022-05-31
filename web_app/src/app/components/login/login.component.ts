@@ -8,18 +8,24 @@ import { AuthClientService, TokenRequestResponse } from 'src/app/services/auth-c
 })
 export class LoginComponent implements OnInit {
 
-  tokenRequestResponse: TokenRequestResponse | undefined;
-  // token: string | undefined;
+  // tokenRequestResponse: TokenRequestResponse | undefined;
+  token: string | undefined;
   constructor(private authClientService: AuthClientService) { }
 
   ngOnInit(): void {
 
   }
 
-  tryLogin(username:string,password:string) {
-    this.authClientService.login(username,password).subscribe(value => {
-      this.tokenRequestResponse = value;
+  tryLogin(username: string, password: string) {
+    this.authClientService.login(username, password).subscribe(value => {
+      this.token=value.access_token;
     });
   }
+
+  loggedIn():boolean{
+    return this.authClientService.getToken().length>0;
+  }
+
+
 
 }
