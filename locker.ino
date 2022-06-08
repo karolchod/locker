@@ -2,21 +2,21 @@
 #include <ESP8266HTTPClient.h>
 #include <WiFiClient.h>
 
-//Dane dostepu do sieci WiFi
+//WiFi network credentials
 const char* ssid = "ssidssid";
 const char* password = "haslohaslo";
 
-//Adres pod ktory wysylane jest zapytanie http
+//Full URL to /api/box/boxesstatus endpoint (backend server address)
 String serverName = "http://192.168.100.106:8080/api/box/boxesstatus";
+//Number of box in backend database
 String boxNumber = "1";
 
-// Czas ostatniego zapytania
+// Time of last API request (ms)
 unsigned long lastTime = 0;
-
-// Czas po którym wysylany jest kolejny pakiet
+// Delay until next request (ms)
 unsigned long timerDelay = 2000;
 
-//Tabela kolejnych wyjsc podlaczonych do przekaznikow
+//Table of pins to which locker relays are connected (lockers in boxNumber box, ordered by locker id ascending)
 int pins[]={D1,D2,D3,D4,D5,D6,D7,D8};
 
 void setup() {
@@ -40,26 +40,26 @@ void setup() {
 
 void loop() {
 
-// Jesli uplynal odpowiedni czas, wysylamy kolejne zapytanie
+// Send another request to APi if correct time period passed
   if ((millis() - lastTime) > timerDelay) {
-    //Sprawdzenie stanu polaczenia sieciowego
+    // Send request only if connected to WiFi
     if(WiFi.status()== WL_CONNECTED){
       WiFiClient client;
       HTTPClient http;
-
-      String serverPath = serverName + "?id="+boxNumber; //wybor skrytki
+      //Selecting correct box
+      String serverPath = serverName + "?id="+boxNumber; 
       
       http.begin(client, serverPath.c_str());
       int httpResponseCode = http.GET();
 
-      //Jesli zapytanie sie powiodlo
+      //If request successful
       if (httpResponseCode>0) {
         Serial.print("HTTP Response code: ");
         Serial.println(httpResponseCode);
         String payload = http.getString();
         Serial.println(payload);
 
-        //przetwarzanie odebranej wiadomosci
+        //Set lockers status according to response from API
         for(int i = 0; i<sizeof(pins)/sizeof(pins[0]); i++){
           digitalWrite(pins[i], payload[i]-'0');
         }
@@ -68,13 +68,13 @@ void loop() {
         Serial.print("Error code: ");
         Serial.println(httpResponseCode);
       }
-      // Zwolnienie zasobow
+      // Free resources
       http.end();
     } else {
-      //brak polaczenia sieciowego
+      //No connection to network
       Serial.println("WiFi Disconnected");
     }
-    //zapamietanie czasu ostatniej proby polaczenia
+    //Save timestamp of last request
     lastTime = millis();
   }
 }
